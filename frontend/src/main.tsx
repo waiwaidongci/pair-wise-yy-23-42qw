@@ -1,54 +1,95 @@
-import React, { useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
-import { routes } from "./router/routes";
-import { mockData } from "./mocks/seedData";
+import { useEffect, useState } from "react";
+import { routes, defaultRoute } from "./router/routes";
+import { initLedger } from "./db/ledgerInit";
+import { preemptiveCacheCleanup } from "./services/CacheService";
+import { recoverLedger } from "./services/PracticeLedgerService";
 import { StatusBadge } from "./components/common/StatusBadge";
-import { StatCard } from "./components/common/StatCard";
 import "./styles.css";
 
-function Page({ name }: { name: string }) {
-  const entities = Object.entries(mockData);
-  const total = useMemo(() => entities.reduce((sum, [, rows]) => sum + rows.length, 0), [entities]);
-  return <main className="page">
-    <section className="page-head">
-      <div>
-        <p className="eyebrow">braille-trainer</p>
-        <h1>{name}</h1>
-      </div>
-      <StatusBadge value="LOCAL_DATA" />
-    </section>
-    <section className="metrics">
-      <StatCard label="核心模型" value={entities.length} />
-      <StatCard label="本地记录" value={total} />
-      <StatCard label="共享枚举" value={3} />
-    </section>
-    <section className="workbench">
-      <div className="panel wide">
-        <h2>业务数据</h2>
-        <div className="table">
-          {entities.map(([key, rows]) => <article key={key} className="row">
-            <strong>{key}</strong><span>{rows.length} 条</span><StatusBadge value={Object.values(rows[0] ?? {})[1] as string ?? "READY"} />
-          </article>)}
+function currentRoute(): string {
+  const hash = window.location.hash.replace(/^#/, "");
+  return routes.some((r) => r.route === hash) ? hash : defaultRoute;
+}
+
+function useHashRoute(): string {
+  const [route, setRoute] = useState<string>(currentRoute());
+  useEffect(() => {
+    const onChange = () => setRoute(currentRoute());
+    window.addEventListener("hashchange", onChange);
+    return () => window.removeEventListener("hashchange", onChange);
+  }, []);
+  return route;
+}
+
+function Shell() {
+  const route = useHashRoute();
+  const current = routes.find((r) => r.route === route) ?? routes[0];
+  const Page = current.element;
+  return (
+    <div className="shell">
+      <aside>
+        <div className="brand">盲文点字学习训练器</div>
+        <nav>
+          {routes.map((r) => (
+            <a
+              key={r.route}
+              href={`#${r.route}`}
+              className={route === r.route ? "active" : ""}
+            >
+              {r.name}
+            </a>
+          ))}
+        </nav>
+        <div className="aside-foot">
+          <StatusBadge value="LOCAL_DATA" />
+          <p>IndexedDB 可恢复账本</p>
         </div>
-      </div>
-      <div className="panel">
-        <h2>联动检查</h2>
-        <p>页面、store、API、构造器、日志模板和枚举常量均按提示词拆分，适合评审跨文件修改能力。</p>
-      </div>
-    </section>
-  </main>;
+      </aside>
+      <Page />
+    </div>
+  );
+}
+
+function BootScreen({ stage }: { stage: string }) {
+  return (
+    <div className="boot">
+      <div className="brand">盲文点字学习训练器</div>
+      <p>{stage}</p>
+    </div>
+  );
 }
 
 function App() {
-  const [active, setActive] = useState<string>(routes[0]?.route ?? "/dashboard");
-  const current = routes.find((route) => route.route === active) ?? routes[0];
-  return <div className="shell">
-    <aside>
-      <div className="brand">盲文点字学习训练器</div>
-      <nav>{routes.map((route) => <button key={route.route} className={active === route.route ? "active" : ""} onClick={() => setActive(route.route)}>{route.name}</button>)}</nav>
-    </aside>
-    <Page name={current?.name ?? "工作台"} />
-  </div>;
+  return <Shell />;
 }
 
-createRoot(document.getElementById("root")!).render(<App />);
+/**
+ * 启动顺序（可恢复账本的关键）：
+ * 1. 初始化账本 + 首次播种
+ * 2. 空间紧张先清可重建缓存
+ * 3. 恢复扫描：补齐或撤掉未结算记录、半截会话失效重排
+ * 4. 渲染界面
+ */
+async function bootstrap(): Promise<void> {
+  await initLedger();
+  await preemptiveCacheCleanup().catch(() => false);
+  await recoverLedger().catch(() => undefined);
+}
+
+const root = document.getElementById("root");
+if (root) {
+  // 先挂一个启动屏，恢复完成后再挂应用
+  root.innerHTML = "";
+  const boot = document.createElement("div");
+  boot.textContent = "正在恢复账本…";
+  boot.className = "boot-text";
+  root.appendChild(boot);
+  bootstrap()
+    .then(() => {
+      createRoot(root).render(<App />);
+    })
+    .catch((error) => {
+      boot.textContent = `账本初始化失败：${error instanceof Error ? error.message : String(error)}`;
+    });
+}

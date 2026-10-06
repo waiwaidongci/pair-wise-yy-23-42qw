@@ -1,124 +1,32 @@
+import type { BrailleSymbol } from "../types/BrailleSymbol";
+import type { Lesson } from "../types/Lesson";
+
+/** 首次打开账本时写入的种子数据；版本号从 1 开始，老师每保存一次递增 */
+export const seedBrailleSymbols: BrailleSymbol[] = [
+  { id: 1, cell_pattern: "1", letter: "a", pinyin: "a", category: "LETTER", difficulty: "1", audio_hint_key: "letter:a", version: 1, updated_at: "2026-09-01T08:00:00Z" },
+  { id: 2, cell_pattern: "1,2", letter: "b", pinyin: "bo", category: "LETTER", difficulty: "1", audio_hint_key: "letter:b", version: 1, updated_at: "2026-09-01T08:00:00Z" },
+  { id: 3, cell_pattern: "1,4", letter: "c", pinyin: "ci", category: "LETTER", difficulty: "1", audio_hint_key: "letter:c", version: 1, updated_at: "2026-09-01T08:00:00Z" },
+  { id: 4, cell_pattern: "1,4,5", letter: "d", pinyin: "de", category: "LETTER", difficulty: "2", audio_hint_key: "letter:d", version: 1, updated_at: "2026-09-01T08:00:00Z" },
+  { id: 5, cell_pattern: "1,5", letter: "e", pinyin: "e", category: "LETTER", difficulty: "1", audio_hint_key: "letter:e", version: 1, updated_at: "2026-09-01T08:00:00Z" },
+  { id: 6, cell_pattern: "1,2,4", letter: "f", pinyin: "fo", category: "LETTER", difficulty: "2", audio_hint_key: "letter:f", version: 1, updated_at: "2026-09-01T08:00:00Z" },
+  { id: 7, cell_pattern: "1,2,4,5", letter: "g", pinyin: "ge", category: "LETTER", difficulty: "2", audio_hint_key: "letter:g", version: 1, updated_at: "2026-09-01T08:00:00Z" },
+  { id: 8, cell_pattern: "1,2,5", letter: "h", pinyin: "he", category: "LETTER", difficulty: "2", audio_hint_key: "letter:h", version: 1, updated_at: "2026-09-01T08:00:00Z" },
+  { id: 9, cell_pattern: "2,4", letter: "i", pinyin: "yi", category: "LETTER", difficulty: "2", audio_hint_key: "letter:i", version: 1, updated_at: "2026-09-01T08:00:00Z" },
+  { id: 10, cell_pattern: "2,4,5", letter: "j", pinyin: "jie", category: "LETTER", difficulty: "2", audio_hint_key: "letter:j", version: 1, updated_at: "2026-09-01T08:00:00Z" },
+  { id: 11, cell_pattern: "1", letter: "1", pinyin: "yi1", category: "NUMBER", difficulty: "3", audio_hint_key: "digit:1", version: 1, updated_at: "2026-09-01T08:00:00Z" },
+  { id: 12, cell_pattern: "2", letter: ",", pinyin: "douhao", category: "PUNCTUATION", difficulty: "3", audio_hint_key: "punct:comma", version: 1, updated_at: "2026-09-01T08:00:00Z" }
+];
+
+export const seedLessons: Lesson[] = [
+  { id: 1, title: "第一课：a-e 基础点位", symbol_ids: [1, 2, 3, 4, 5], stage: "STAGE_1", estimated_minutes: 10, unlock_rule: "NONE", version: 1, updated_at: "2026-09-01T08:00:00Z" },
+  { id: 2, title: "第二课：f-j 组合点位", symbol_ids: [6, 7, 8, 9, 10], stage: "STAGE_2", estimated_minutes: 12, unlock_rule: "FINISH_LESSON_1", version: 1, updated_at: "2026-09-01T08:00:00Z" },
+  { id: 3, title: "第三课：数字与标点", symbol_ids: [11, 12, 1, 5], stage: "STAGE_3", estimated_minutes: 8, unlock_rule: "FINISH_LESSON_2", version: 1, updated_at: "2026-09-01T08:00:00Z" }
+];
+
+/** 兼容旧聚合结构（工作台总览仍可使用） */
 export const mockData = {
-  "brailleSymbol": [
-    {
-      "id": 1,
-      "cell_pattern": "cell pattern 1",
-      "letter": "letter 1",
-      "pinyin": "pinyin 1",
-      "category": "TEXT_TO_CELL",
-      "difficulty": "difficulty 1",
-      "audio_hint_key": "audio hint key 1"
-    },
-    {
-      "id": 2,
-      "cell_pattern": "cell pattern 2",
-      "letter": "letter 2",
-      "pinyin": "pinyin 2",
-      "category": "LISTENING",
-      "difficulty": "difficulty 2",
-      "audio_hint_key": "audio hint key 2"
-    },
-    {
-      "id": 3,
-      "cell_pattern": "cell pattern 3",
-      "letter": "letter 3",
-      "pinyin": "pinyin 3",
-      "category": "MIXED",
-      "difficulty": "difficulty 3",
-      "audio_hint_key": "audio hint key 3"
-    }
-  ],
-  "lesson": [
-    {
-      "id": 1,
-      "title": "title 1",
-      "symbol_ids": [
-        1,
-        2
-      ],
-      "stage": "stage 1",
-      "estimated_minutes": "estimated minutes 1",
-      "unlock_rule": "unlock rule 1"
-    },
-    {
-      "id": 2,
-      "title": "title 2",
-      "symbol_ids": [
-        1,
-        2
-      ],
-      "stage": "stage 2",
-      "estimated_minutes": "estimated minutes 2",
-      "unlock_rule": "unlock rule 2"
-    },
-    {
-      "id": 3,
-      "title": "title 3",
-      "symbol_ids": [
-        1,
-        2
-      ],
-      "stage": "stage 3",
-      "estimated_minutes": "estimated minutes 3",
-      "unlock_rule": "unlock rule 3"
-    }
-  ],
-  "practiceSession": [
-    {
-      "id": 1,
-      "lesson_id": 1,
-      "mode": "mode 1",
-      "started_at": "2026-06-11T09:00:00Z",
-      "finished_at": "2026-06-11T09:00:00Z",
-      "score": "LOW",
-      "mistake_count": "mistake count 1"
-    },
-    {
-      "id": 2,
-      "lesson_id": 2,
-      "mode": "mode 2",
-      "started_at": "2026-06-12T09:00:00Z",
-      "finished_at": "2026-06-12T09:00:00Z",
-      "score": "MEDIUM",
-      "mistake_count": "mistake count 2"
-    },
-    {
-      "id": 3,
-      "lesson_id": 3,
-      "mode": "mode 3",
-      "started_at": "2026-06-13T09:00:00Z",
-      "finished_at": "2026-06-13T09:00:00Z",
-      "score": "HIGH",
-      "mistake_count": "mistake count 3"
-    }
-  ],
-  "answerRecord": [
-    {
-      "id": 1,
-      "session_id": 1,
-      "symbol_id": 1,
-      "user_answer": "user answer 1",
-      "correct": "correct 1",
-      "latency_ms": "latency ms 1",
-      "mistake_reason": "mistake reason 1"
-    },
-    {
-      "id": 2,
-      "session_id": 2,
-      "symbol_id": 2,
-      "user_answer": "user answer 2",
-      "correct": "correct 2",
-      "latency_ms": "latency ms 2",
-      "mistake_reason": "mistake reason 2"
-    },
-    {
-      "id": 3,
-      "session_id": 3,
-      "symbol_id": 3,
-      "user_answer": "user answer 3",
-      "correct": "correct 3",
-      "latency_ms": "latency ms 3",
-      "mistake_reason": "mistake reason 3"
-    }
-  ]
+  brailleSymbol: seedBrailleSymbols,
+  lesson: seedLessons,
+  practiceSession: [] as Record<string, unknown>[],
+  answerRecord: [] as Record<string, unknown>[]
 } as const;

@@ -1,21 +1,29 @@
-import { mockData } from "../mocks/seedData";
 import type { Lesson } from "../types/Lesson";
+import { listLessons, saveLesson } from "../services/LessonService";
+import { wrapControllerError } from "../services/LedgerError";
+import { log } from "../utils/logger";
 
 const endpoint = "/api/lesson";
 
 export async function listLesson(): Promise<Lesson[]> {
-  if (typeof fetch !== "undefined" && endpoint.startsWith("/api") && false) {
-    try {
-      const res = await fetch(endpoint);
-      if (res.ok) return await res.json();
-    } catch {
-      // Local mock fallback keeps the UI available during offline review.
-    }
+  void endpoint;
+  try {
+    return await listLessons();
+  } catch (error) {
+    throw wrapControllerError(error, "加载课程");
   }
-  return [...(mockData.lesson as unknown as Lesson[])];
 }
 
-export async function saveLesson(payload: Lesson) {
-  console.info("save Lesson", payload);
-  return payload;
+export async function saveLessonApi(payload: Partial<Lesson> & Pick<Lesson, "title">): Promise<Lesson> {
+  try {
+    return await saveLesson(payload);
+  } catch (error) {
+    throw wrapControllerError(error, "保存课程");
+  }
+}
+
+export async function exportLesson(): Promise<Lesson[]> {
+  const rows = await listLessons();
+  log("Lesson", 3, { count: rows.length });
+  return rows;
 }
