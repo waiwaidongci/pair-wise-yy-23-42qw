@@ -2,123 +2,103 @@ export const mockData = {
   "brailleSymbol": [
     {
       "id": 1,
-      "cell_pattern": "cell pattern 1",
-      "letter": "letter 1",
-      "pinyin": "pinyin 1",
-      "category": "TEXT_TO_CELL",
-      "difficulty": "difficulty 1",
-      "audio_hint_key": "audio hint key 1"
+      "cell_pattern": "⠁",
+      "letter": "A",
+      "pinyin": "a",
+      "category": "LETTER",
+      "difficulty": "1",
+      "audio_hint_key": "a",
+      "version_hash": "",
+      "updated_at": "2026-01-01T00:00:00Z"
     },
     {
       "id": 2,
-      "cell_pattern": "cell pattern 2",
-      "letter": "letter 2",
-      "pinyin": "pinyin 2",
-      "category": "LISTENING",
-      "difficulty": "difficulty 2",
-      "audio_hint_key": "audio hint key 2"
+      "cell_pattern": "⠃",
+      "letter": "B",
+      "pinyin": "b",
+      "category": "LETTER",
+      "difficulty": "1",
+      "audio_hint_key": "b",
+      "version_hash": "",
+      "updated_at": "2026-01-01T00:00:00Z"
     },
     {
       "id": 3,
-      "cell_pattern": "cell pattern 3",
-      "letter": "letter 3",
-      "pinyin": "pinyin 3",
-      "category": "MIXED",
-      "difficulty": "difficulty 3",
-      "audio_hint_key": "audio hint key 3"
+      "cell_pattern": "⠉",
+      "letter": "C",
+      "pinyin": "c",
+      "category": "LETTER",
+      "difficulty": "2",
+      "audio_hint_key": "c",
+      "version_hash": "",
+      "updated_at": "2026-01-01T00:00:00Z"
+    },
+    {
+      "id": 4,
+      "cell_pattern": "⠙",
+      "letter": "D",
+      "pinyin": "d",
+      "category": "LETTER",
+      "difficulty": "2",
+      "audio_hint_key": "d",
+      "version_hash": "",
+      "updated_at": "2026-01-01T00:00:00Z"
+    },
+    {
+      "id": 5,
+      "cell_pattern": "⠑",
+      "letter": "E",
+      "pinyin": "e",
+      "category": "LETTER",
+      "difficulty": "3",
+      "audio_hint_key": "e",
+      "version_hash": "",
+      "updated_at": "2026-01-01T00:00:00Z"
+    },
+    {
+      "id": 6,
+      "cell_pattern": "⠿",
+      "letter": "全符",
+      "pinyin": "quan",
+      "category": "CONTRACTION",
+      "difficulty": "3",
+      "audio_hint_key": "quan",
+      "version_hash": "",
+      "updated_at": "2026-01-01T00:00:00Z"
     }
   ],
   "lesson": [
     {
       "id": 1,
-      "title": "title 1",
-      "symbol_ids": [
-        1,
-        2
-      ],
-      "stage": "stage 1",
-      "estimated_minutes": "estimated minutes 1",
-      "unlock_rule": "unlock rule 1"
+      "title": "入门字母 A-C",
+      "symbol_ids": [1, 2, 3],
+      "stage": "入门",
+      "estimated_minutes": 10,
+      "unlock_rule": "完成前置课程",
+      "version_hash": "",
+      "updated_at": "2026-01-01T00:00:00Z"
     },
     {
       "id": 2,
-      "title": "title 2",
-      "symbol_ids": [
-        1,
-        2
-      ],
-      "stage": "stage 2",
-      "estimated_minutes": "estimated minutes 2",
-      "unlock_rule": "unlock rule 2"
+      "title": "进阶字母 D-E",
+      "symbol_ids": [3, 4, 5],
+      "stage": "进阶",
+      "estimated_minutes": 15,
+      "unlock_rule": "完成入门字母",
+      "version_hash": "",
+      "updated_at": "2026-01-01T00:00:00Z"
     },
     {
       "id": 3,
-      "title": "title 3",
-      "symbol_ids": [
-        1,
-        2
-      ],
-      "stage": "stage 3",
-      "estimated_minutes": "estimated minutes 3",
-      "unlock_rule": "unlock rule 3"
+      "title": "综合练习",
+      "symbol_ids": [1, 2, 3, 4, 5, 6],
+      "stage": "综合",
+      "estimated_minutes": 20,
+      "unlock_rule": "完成进阶字母",
+      "version_hash": "",
+      "updated_at": "2026-01-01T00:00:00Z"
     }
   ],
-  "practiceSession": [
-    {
-      "id": 1,
-      "lesson_id": 1,
-      "mode": "mode 1",
-      "started_at": "2026-06-11T09:00:00Z",
-      "finished_at": "2026-06-11T09:00:00Z",
-      "score": "LOW",
-      "mistake_count": "mistake count 1"
-    },
-    {
-      "id": 2,
-      "lesson_id": 2,
-      "mode": "mode 2",
-      "started_at": "2026-06-12T09:00:00Z",
-      "finished_at": "2026-06-12T09:00:00Z",
-      "score": "MEDIUM",
-      "mistake_count": "mistake count 2"
-    },
-    {
-      "id": 3,
-      "lesson_id": 3,
-      "mode": "mode 3",
-      "started_at": "2026-06-13T09:00:00Z",
-      "finished_at": "2026-06-13T09:00:00Z",
-      "score": "HIGH",
-      "mistake_count": "mistake count 3"
-    }
-  ],
-  "answerRecord": [
-    {
-      "id": 1,
-      "session_id": 1,
-      "symbol_id": 1,
-      "user_answer": "user answer 1",
-      "correct": "correct 1",
-      "latency_ms": "latency ms 1",
-      "mistake_reason": "mistake reason 1"
-    },
-    {
-      "id": 2,
-      "session_id": 2,
-      "symbol_id": 2,
-      "user_answer": "user answer 2",
-      "correct": "correct 2",
-      "latency_ms": "latency ms 2",
-      "mistake_reason": "mistake reason 2"
-    },
-    {
-      "id": 3,
-      "session_id": 3,
-      "symbol_id": 3,
-      "user_answer": "user answer 3",
-      "correct": "correct 3",
-      "latency_ms": "latency ms 3",
-      "mistake_reason": "mistake reason 3"
-    }
-  ]
+  "practiceSession": [],
+  "answerRecord": []
 } as const;

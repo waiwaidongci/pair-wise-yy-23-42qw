@@ -6,4 +6,6 @@ export interface BrailleSymbol {
   category: string;
   difficulty: string;
   audio_hint_key: string;
+  version_hash: string;
+  updated_at: string;
 }

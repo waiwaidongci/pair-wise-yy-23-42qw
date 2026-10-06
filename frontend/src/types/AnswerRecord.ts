@@ -6,4 +6,6 @@ export interface AnswerRecord {
   correct: string;
   latency_ms: string;
   mistake_reason: string;
+  op_id: number;
+  settled_by: string;
 }
